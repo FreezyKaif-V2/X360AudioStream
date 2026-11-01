@@ -4,7 +4,7 @@ Stream Xbox 360 audio to your Windows PC over your local network. Listen to game
 
 ## Features
 
-- System audio streaming with DashLaunch autostart.
+- System audio streaming with DashLaunch autostart or temporary loading through xbGuard.
 - Uncompressed 48 kHz, 16-bit stereo audio.
 - Live PC volume control with a default level of 200%.
 - Automatic connection retry when the receiver is unavailable.
@@ -24,7 +24,7 @@ Download the attached PC ZIP rather than GitHub's automatic **Source code** arch
 
 ## Requirements
 
-- A modified Xbox 360 with DashLaunch.
+- A modified Xbox 360 with DashLaunch for autostart, or xbGuard for temporary plugin loading.
 - Windows with Python 3.10+ and Tkinter, with Python added to PATH.
 - A network connection between the Xbox and PC.
 - Inbound TCP port **36000** allowed for the PC receiver through Windows Firewall.
@@ -36,6 +36,8 @@ Download the attached PC ZIP rather than GitHub's automatic **Source code** arch
 
 Copy `Xbox360Audio.xex` to the root of the Xbox HDD.
 
+**Option A — DashLaunch autostart**
+
 In your existing `HDD:\launch.ini`, add the following path to a free slot under `[Plugins]`:
 
 ```ini
@@ -43,7 +45,13 @@ In your existing `HDD:\launch.ini`, add the following path to a free slot under 
 plugin4 = HDD:\Xbox360Audio.xex
 ```
 
-Use a different slot number if `plugin4` is occupied. Keep your existing launcher and other plugin entries. Only one copy of the audio plugin should be configured; xbGuard is not required.
+Use a different slot number if `plugin4` is occupied. Keep your existing launcher and other plugin entries. xbGuard is not required for this method.
+
+**Option B — xbGuard temporary loading**
+
+You can load the audio plugin through xbGuard without adding it to DashLaunch autostart. Finish the PC setup and receiver-address configuration below before loading it.
+
+If the audio plugin is already configured in `launch.ini`, remove that audio entry and reboot before using temporary loading. **Do not load another copy through xbGuard while a copy is already running.**
 
 ### 2. Set up the PC app
 
@@ -75,7 +83,12 @@ Replace the example address with your own and preserve any other settings in the
 
 ### 4. Start listening
 
-Choose an output device in the PC app and click **Start audio**, then reboot the Xbox to load the plugin and apply its settings.
+Choose an output device in the PC app and click **Start audio**, then use your chosen loading method:
+
+- **DashLaunch:** reboot the Xbox to load the plugin automatically and apply its settings.
+- **xbGuard:** open xbGuard's temporary plugin-loading menu and select `HDD:\Xbox360Audio.xex`. Load it once; it remains active for the current console session. After rebooting, load it again through xbGuard.
+
+To stop or replace a temporarily loaded audio plugin, reboot the Xbox. Do not use xbGuard's unload option while the audio plugin is running.
 
 For later sessions, open the app and click **Start audio**. The plugin automatically retries the connection when the receiver becomes available.
 
@@ -84,13 +97,13 @@ For later sessions, open the app and click **Start audio**. The plugin automatic
 - **Volume:** changes apply during playback. 0% mutes, 100% leaves the level unchanged, and the default 200% boosts quieter sounds. Lower the volume if loud audio distorts. This controls PC playback volume.
 - **Output device:** choose the device before starting audio. Stop and restart audio after changing it.
 - **Stop audio:** stops the PC receiver. Click **Start audio** to listen again.
-- **Connection settings:** reboot the Xbox after changing the receiver IP. A DHCP reservation can help keep the PC address stable.
+- **Connection settings:** reboot the Xbox after changing the receiver IP. If using xbGuard temporary loading, load the plugin again after the reboot. A DHCP reservation can help keep the PC address stable.
 
 ## Troubleshooting
 
 | Problem | What to check |
 | --- | --- |
-| No connection | Click **Start audio**, check the PC IP and firewall, and confirm the plugin path in `launch.ini`. |
+| No connection | Click **Start audio**, check the PC IP and firewall, and confirm the plugin is loaded through DashLaunch or xbGuard. |
 | Save to Xbox fails | Check the Xbox IP and XBDM access on TCP 730. FTP access alone is not sufficient. |
 | Connected but silent | Check the output device and volume. Test a game or Guide navigation; Aurora normally has no navigation sounds. |
 | Audio driver error | Select an available output device and restart audio. |
