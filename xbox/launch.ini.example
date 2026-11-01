@@ -1,0 +1,4 @@
+; EXAMPLE ONLY: add one entry to a free slot in your existing [Plugins] section.
+; Preserve your launcher and other plugins. Change plugin4 if already occupied.
+[Plugins]
+plugin4 = HDD:\Xbox360Audio.xex

@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+config-backups/
+*.log
+test_handoff
+test_pcm_convert

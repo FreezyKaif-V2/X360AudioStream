@@ -9,6 +9,14 @@ The current Xbox build is the user-tested **stream20** build, distributed as
 have been confirmed on the development console. Aurora itself normally has
 no navigation sounds. There is no custom Guide UI.
 
+## Binary availability
+
+The verified XEX is currently in the maintainer's local release folder, but has
+not been uploaded to this public repository pending explicit publication approval
+and clarification of the original binary's redistribution terms. The checksum
+identifies that local build; it is not a download link. Installation instructions
+below apply once you have the matching binary.
+
 ## Requirements
 
 - A modified Xbox 360 that can load DashLaunch plugins.

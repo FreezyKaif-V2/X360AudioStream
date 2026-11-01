@@ -1,0 +1,2 @@
+; Set this to your PC network IPv4 address, then reboot the Xbox.
+PC_IP=192.168.1.100
