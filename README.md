@@ -11,7 +11,7 @@ no navigation sounds. There is no custom Guide UI.
 
 ## Download
 
-[Download Xbox360Audio.xex](https://github.com/FreezyKaif-V2/X360AudioStream/raw/refs/heads/main/xbox/Xbox360Audio.xex)
+[Download files from releases](https://github.com/FreezyKaif-V2/X360AudioStream/releases/tag/v0.1.0)
 
 The binary matches the tested stream20 build. Verify it against [SHA256SUMS.txt](SHA256SUMS.txt).
 
