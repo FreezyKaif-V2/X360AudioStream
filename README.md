@@ -1,71 +1,120 @@
 # X360AudioStream
 
-Stream Xbox 360 system audio to a Windows PC over your local network.
-The Xbox plugin starts through DashLaunch; the PC app plays the stream with
-live volume control and a default volume of 200%.
+Stream Xbox 360 audio to your Windows PC over your local network. Listen to games, dashboard audio and Xbox Guide sound effects through your PC's speakers or headphones.
 
-The current Xbox build is the user-tested **stream20** build, distributed as
-`Xbox360Audio.xex`. Guide sound effects, the original dashboard and game audio
-have been confirmed on the development console. Aurora itself normally has
-no navigation sounds. There is no custom Guide UI.
+## Features
 
-## Download
+- System audio streaming with DashLaunch autostart.
+- Uncompressed 48 kHz, 16-bit stereo audio.
+- Live PC volume control with a default level of 200%.
+- Automatic connection retry when the receiver is unavailable.
+- Windowless PC app with output-device selection and connection logs.
+- Receiver IP settings that can be saved directly to the Xbox.
 
-[Download files from releases](https://github.com/FreezyKaif-V2/X360AudioStream/releases/tag/v0.1.0)
+## Downloads
 
-The binary matches the tested stream20 build. Verify it against [SHA256SUMS.txt](SHA256SUMS.txt).
+Get both files from the [v0.1.0 release](https://github.com/FreezyKaif-V2/X360AudioStream/releases/tag/v0.1.0):
+
+| File | Purpose |
+| --- | --- |
+| [Xbox360Audio.xex](https://github.com/FreezyKaif-V2/X360AudioStream/releases/download/v0.1.0/Xbox360Audio.xex) | Xbox audio plugin |
+| [X360AudioStream-PC-v0.1.0.zip](https://github.com/FreezyKaif-V2/X360AudioStream/releases/download/v0.1.0/X360AudioStream-PC-v0.1.0.zip) | Windows receiver app |
+
+Download the attached PC ZIP rather than GitHub's automatic **Source code** archives. The PC app requires Python; it is not a standalone EXE.
 
 ## Requirements
 
-- A modified Xbox 360 that can load DashLaunch plugins.
-- A Windows PC with Python 3.10+ and Tkinter.
-- Both devices reachable on the local network. The receiver listens on TCP 36000.
-- XBDM on the Xbox (TCP 730) if using **Xbox connection settings → Save to Xbox**.
-  Manual editing of the INI is also supported and does not require XBDM.
+- A modified Xbox 360 with DashLaunch.
+- Windows with Python 3.10+ and Tkinter, with Python added to PATH.
+- A network connection between the Xbox and PC.
+- Inbound TCP port **36000** allowed for the PC receiver through Windows Firewall.
+- XBDM on the Xbox, reachable on TCP **730**, to use **Save to Xbox**. You can also configure the receiver IP manually without XBDM.
 
-## Quick start
+## Setup
 
-1. Install PC dependencies from this folder:
-   `python -m pip install -r pc/requirements.txt`
-2. Copy `xbox/Xbox360Audio.xex` to `HDD:\Xbox360Audio.xex`.
-3. Copy `xbox/PERFORMER-AV.ini.example` to `HDD:\PERFORMER-AV.ini` and set
-   `PC_IP` to your PC's actual IPv4 address. Preserve an existing config if present.
-4. In your existing `HDD:\launch.ini`, set one free plugin slot to
-   `HDD:\Xbox360Audio.xex`. See `xbox/launch.ini.example`; do not replace your
-   entire launch.ini with that example.
-5. Open `pc/Start-Xbox-Audio.vbs`, choose the output device and click **Start audio**.
-6. Reboot the Xbox to load the plugin. Do not load a second copy manually.
+### 1. Install the Xbox plugin
 
-The `.vbs` launcher opens only the app window. The `.bat` compatibility launcher
-may briefly flash a command window. Logs appear inside the app.
+Copy `Xbox360Audio.xex` to the root of the Xbox HDD.
 
-To change the receiver address later, open **Xbox connection settings**, enter
-the Xbox and PC full IPv4 addresses, and select **Save to Xbox**. The app backs
-up existing settings and reads the saved file back to verify it. Reboot the
-Xbox after changing the address. It is not restricted to `192.168.1.x`.
+In your existing `HDD:\launch.ini`, add the following path to a free slot under `[Plugins]`:
 
-## Playback and reconnection
+```ini
+[Plugins]
+plugin4 = HDD:\Xbox360Audio.xex
+```
 
-Volume changes apply while playing; **Applied …%** means the receiver accepted
-the setting. 0% mutes and 100% is unity gain. The default 200% helps quieter
-system sounds but can clip loud material. This is PC output gain, not Xbox TV volume.
+Use a different slot number if `plugin4` is occupied. Keep your existing launcher and other plugin entries. Only one copy of the audio plugin should be configured; xbGuard is not required.
 
-The plugin retries if the PC receiver starts later or closes. Reopen the app
-and click **Start audio** to listen again. Repeated restart behavior is supported
-by the code but has not yet received repeated hardware acceptance testing.
+### 2. Set up the PC app
 
-Audio is uncompressed 48 kHz, stereo, signed 16-bit PCM, approximately 1.536 Mbps
-before headers. There is no measured end-to-end latency guarantee. The output
-latency printed by the app is only the audio device's reported latency.
+Extract the PC ZIP. Open a terminal in the extracted folder containing `requirements.txt` and run:
 
-## Documentation
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Open `Start-Xbox-Audio.vbs` to launch the app without a console window.
+
+### 3. Set the receiver address
+
+In the PC app, open **Xbox connection settings**:
+
+1. Enter the Xbox's IPv4 address.
+2. Enter the PC's IPv4 address on the network connected to the Xbox.
+3. Click **Save to Xbox**.
+
+The app backs up existing settings and verifies the saved file. Full IPv4 addresses are supported, including networks such as `192.168.0.x`, `192.168.1.x` and `10.0.0.x`.
+
+**Manual configuration:** create or edit `HDD:\PERFORMER-AV.ini` and set `PC_IP` to your PC's address:
+
+```ini
+PC_IP=192.168.1.100
+```
+
+Replace the example address with your own and preserve any other settings in the file. Keep the filename `PERFORMER-AV.ini` exactly as shown.
+
+### 4. Start listening
+
+Choose an output device in the PC app and click **Start audio**, then reboot the Xbox to load the plugin and apply its settings.
+
+For later sessions, open the app and click **Start audio**. The plugin automatically retries the connection when the receiver becomes available.
+
+## Using the app
+
+- **Volume:** changes apply during playback. 0% mutes, 100% leaves the level unchanged, and the default 200% boosts quieter sounds. Lower the volume if loud audio distorts. This controls PC playback volume.
+- **Output device:** choose the device before starting audio. Stop and restart audio after changing it.
+- **Stop audio:** stops the PC receiver. Click **Start audio** to listen again.
+- **Connection settings:** reboot the Xbox after changing the receiver IP. A DHCP reservation can help keep the PC address stable.
+
+## Troubleshooting
+
+| Problem | What to check |
+| --- | --- |
+| No connection | Click **Start audio**, check the PC IP and firewall, and confirm the plugin path in `launch.ini`. |
+| Save to Xbox fails | Check the Xbox IP and XBDM access on TCP 730. FTP access alone is not sufficient. |
+| Connected but silent | Check the output device and volume. Test a game or Guide navigation; Aurora normally has no navigation sounds. |
+| Audio driver error | Select an available output device and restart audio. |
+| Delayed or distorted sound | Try wired headphones or speakers, and reduce volume if the audio clips. |
+
+Keep only one PC receiver running on port 36000. To replace or stop the resident Xbox plugin, reboot the console rather than unloading it while it is running.
+
+## Audio format
+
+| Setting | Value |
+| --- | --- |
+| Sample rate | 48 kHz |
+| Channels | Stereo |
+| Sample format | Signed 16-bit PCM |
+| Audio bitrate | Approximately 1.536 Mbps, excluding network headers |
+| Transport | TCP |
+
+Playback delay depends on the network and output device. The latency shown in the app is the audio device's reported latency, not the total Xbox-to-speaker delay.
+
+## Documentation and credits
 
 - [Installation and networking](docs/INSTALLATION.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-- [Architecture and build limitations](docs/DEVELOPMENT.md)
-- [Validation record](docs/VALIDATION.md)
+- [Troubleshooting and command-line options](docs/TROUBLESHOOTING.md)
+- [Developer documentation](docs/DEVELOPMENT.md)
 - [Credits and component provenance](THIRD_PARTY_NOTICES.md)
 
 Original 360Stream base by [u/SirDankz](https://www.reddit.com/user/SirDankz/).
-This repository contains the PC app, capture additions and the patched Xbox
-binary; it is **not a complete from-source rebuild of the original XEX**.
