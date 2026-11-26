@@ -8,8 +8,15 @@ This is not a validated surround downmix.
 
 The conversion worker writes a 64-slot PCM queue consumed by the original
 streamer's network worker. Each worker uses hardware thread 3 in the accepted
-stream20 binary. This placement fixed the observed autostart Guide failure on
-the development console. Bounded connect attempts retain the reconnect loop.
+stream20/stream21 binaries. This placement fixed the observed autostart Guide
+failure on the development console. Bounded connect attempts retain the
+reconnect loop.
+
+In `v0.1.1` (stream21), only the `PERFORMER-AV.ini` primary path and miss
+behavior changed relative to stream20 (`hdd1:\PERFORMER-AV.ini` ->
+`HDD:\PERFORMER-AV.ini`, and returning `0` on miss instead of jumping to a
+hardcoded `192.168.1.13` fallback). The capture, conversion, thread affinity,
+and streaming path remain bit-for-bit identical to stream20.
 
 The PC receiver accepts the original 28-byte big-endian HY37 packet header and
 plays little-endian PCM through sounddevice. Its GUI controls the receiver through

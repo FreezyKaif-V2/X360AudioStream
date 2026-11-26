@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.1 — 2026-11-26
+
+- Fixed `HDD:\PERFORMER-AV.ini` lookup under DashLaunch autostart (`hdd1:\` -> `HDD:\`) so receiver IP changes in `PC_IP` apply at boot.
+- Removed the hardcoded `192.168.1.13` fallback IP when `PERFORMER-AV.ini` is missing; the plugin now retries reading configuration instead of connecting to a stale address.
+- Kept audio capture, PCM conversion, thread affinity, and network streaming behavior unchanged from `v0.1.0`.
+- Updated release docs and hardware validation notes.
+
 ## Initial documented build — 2026-11-01
 
 - Standardized the accepted stream20 binary as Xbox360Audio.xex.

@@ -3,5 +3,6 @@ __pycache__/
 .venv/
 config-backups/
 *.log
+*.zip
 test_handoff
 test_pcm_convert

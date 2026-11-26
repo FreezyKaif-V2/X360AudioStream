@@ -2,10 +2,15 @@
 
 ## No connection
 
-Click **Start audio**; opening the window alone does not start the receiver.
-Check PC_IP, the active PC adapter, TCP 36000 firewall access, and the DashLaunch
-plugin path. Reboot after editing Xbox settings. Only one receiver can listen
-on port 36000. A connection may take a few seconds after the receiver starts.
+Click **Start audio** before booting the Xbox; opening the window alone does
+not start the receiver. Check `PC_IP` in `HDD:\PERFORMER-AV.ini`, the active PC
+adapter, TCP 36000 firewall access, and the DashLaunch plugin path. Reboot
+after editing Xbox settings. Only one receiver can listen on port 36000. A
+connection may take a few seconds after the receiver starts.
+
+If the Xbox was booted while the receiver was closed and retried for several
+minutes without connecting after **Start audio** was clicked, reboot the Xbox
+while **Start audio** is running.
 
 ## Save to Xbox fails
 
